@@ -1,38 +1,61 @@
 ﻿using GFA.OOP.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using IdGen;
 
 namespace GFA.OOP.Models
 {
-    internal class GameAccount
+    public class GameAccount
     {
-        public int Id { get; set; }
+        private static IdGenerator _generator = new IdGenerator(0);
+        public string Id { get; private set; }
         public string UserName { get; set; }
         public string Password { get; set; }
         public Platform Platform { get; set; }
         public int Level { get; set; }
         public string GameName { get; set; }
         public decimal Price { get; set; }
+
+        public GameAccount()
+        {
+            Id = _generator.CreateId().ToString();
+        }
+
+
+        public static int ConvertStringToLevel(string levelText)
+        {
+            int level = 0;
+
+            if (!int.TryParse(levelText,out level))
+                return 0;
+
+            return level;
+
+        }
+
         public static Platform ConvertStringToPlatform(string platform)
         {
+
+            if (string.IsNullOrWhiteSpace(platform))
+                return Platform.Unknown;
+
             switch (platform.ToLower())
             {
                 case "steam":
                     return Platform.Steam;
+
                 case "origin":
                     return Platform.Origin;
+
                 case "battle.net":
                     return Platform.BattleNet;
+
                 case "uplay":
-                    return Platform.Uplay;
+                    return Platform.UPlay;
+
                 case "epic games":
                     return Platform.EpicGames;
 
                 default:
-                    throw new Exception("Unex");
+                    return Platform.Unknown;
             }
         }
     }

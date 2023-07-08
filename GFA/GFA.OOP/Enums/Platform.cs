@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GFA.OOP.Enums
+﻿namespace GFA.OOP.Enums
 {
     public enum Platform
     {
-        Steam,
-        Origin,
-        BattleNet,
-        EpicGames,
-        Uplay
-    }
+        Steam=0,
+        Origin=1,
+        BattleNet=2,
+        UPlay=3,
+        EpicGames=4,
 
+        Unknown = 100,
+    }
 }
