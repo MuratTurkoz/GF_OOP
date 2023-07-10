@@ -1,19 +1,22 @@
 ﻿
 
+using GFA.OOP.Common;
 using GFA.OOP.Enums;
 
 namespace GFA.OOP.Models
 {
-    public class Player
+    public class Player:BaseModel<Guid>
     {
         private int _level;
 
-        public Guid Id { get; }
-        public string Name { get; set; }
+    
+        public string UserName { get; set; }
         public int Level => _level;
         public Race Race { get; private set; }
         public PlayerClassType ClassType { get; set; }
-        public int  FavouriteNumber { get; set; }
+        public int FavouriteNumber { get; set; }
+        public double Hp { get; set; }
+
 
         public Player()
         {
@@ -25,9 +28,9 @@ namespace GFA.OOP.Models
         public Player(string name, int level, Race race, PlayerClassType classType)
         {
 
-            Id = Guid.NewGuid();
+            Id = Guid.NewGuid() ;
 
-            Name = name;
+            UserName = name;
 
             _level = level;
 
@@ -42,7 +45,7 @@ namespace GFA.OOP.Models
         {
             _level += 1;
 
-            Console.WriteLine($"{Name} named character was leveled up to {_level}");
+            Console.WriteLine($"{UserName} named character was leveled up to {_level}");
         }
 
         public void ChangeRace(Race race)
