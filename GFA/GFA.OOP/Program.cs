@@ -1,6 +1,6 @@
 ﻿using GFA.OOP.Models;
 
-var fileText = File.ReadAllText("C:\\Users\\alper\\Desktop\\RussianMob.txt");
+var fileText = File.ReadAllText("C:\\Users\\Murat\\Desktop\\RussianMob.txt");
 
 var lineSplittedText = fileText.Split('\n');
 
