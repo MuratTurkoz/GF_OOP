@@ -1,37 +1,28 @@
-﻿using GFA.OOP.Models;
+﻿
+using GFA.OOP.Extensions;
+using GFA.OOP.Interfaces;
+using GFA.OOP.Models;
+using GFA.OOP.Services;
 
-var fileText = File.ReadAllText("C:\\Users\\Murat\\Desktop\\RussianMob.txt");
+//Console.WriteLine("How do you want to save your context");
+//Console.WriteLine(".txt or .json");
 
-var lineSplittedText = fileText.Split('\n');
+//IFileSaver fileSaver;
 
-List<GameAccount> gameAccounts = new();
+//var userAnswer = Console.ReadLine();
+//if (userAnswer == "txt")
+//{
+//    fileSaver = new TextFileSaver();
+//    fileSaver.Save("deneme","Hi there");
+//}
+//else if (userAnswer == "json")
+//{
+//    fileSaver=new JsonFileSaver();
+//    fileSaver.Save("deneme", "Hi there");
+//}
 
-foreach (var lineText in lineSplittedText)
-{
-    var lineItems = lineText.Split("---");
 
+var gameAccount = new GameAccount();
+gameAccount.Level = 100;
+Console.WriteLine(gameAccount.Level.IsEven());
 
-    GameAccount account = new()
-    {
-
-        UserName = lineItems[0],
-        Password = lineItems[1],
-        Platform = GameAccount.ConvertStringToPlatform(lineItems[2]),
-        Level = GameAccount.ConvertStringToLevel(lineItems[3]),
-        GameName = lineItems[4],
-        Price = Convert.ToDecimal(lineItems[5].Replace("$", string.Empty)),
-    };
-
-    gameAccounts.Add(account);
-
-}
-
-//gameAccounts.ForEach(x => Console.WriteLine($"ID:{x.Id}, UserName:{x.UserName}, Password:{x.Password}, Platform:{x.Platform}, Level:{x.Level}, GameName:{x.GameName}, Price:{x.Price:C}"));
-Player player = new Player();
-
-if (player.LastModifiedOn.HasValue)
-{
-    Console.WriteLine($"The last modified date is{player.LastModifiedOn.Value.ToString("f")}");
-}
-
-Console.ReadLine();
