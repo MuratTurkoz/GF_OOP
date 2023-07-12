@@ -4,10 +4,9 @@ using IdGen;
 
 namespace GFA.OOP.Models
 {
-    public class GameAccount : BaseModel<long>
+    public class GameAccount : BaseModel<string>
     {
         private static IdGenerator _generator = new IdGenerator(0);
-
         public string UserName { get; set; }
         public string Password { get; set; }
         public Platform Platform { get; set; }
@@ -15,9 +14,12 @@ namespace GFA.OOP.Models
         public string GameName { get; set; }
         public decimal Price { get; set; }
 
+
         public GameAccount()
         {
-            Id = _generator.CreateId();
+            Id = _generator.CreateId().ToString();
+
+            CreatedOn = DateTime.Now;
         }
 
 
@@ -25,7 +27,7 @@ namespace GFA.OOP.Models
         {
             int level = 0;
 
-            if (!int.TryParse(levelText, out level))
+            if (!int.TryParse(levelText,out level))
                 return 0;
 
             return level;

@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GFA.OOP.Common
+﻿namespace GFA.OOP.Common
 {
-    public class BaseModel<TKey>
+    public abstract class BaseModel<TKey>:IModel<TKey>,ICreatedByModel,IModifiedByModel
     {
         public TKey Id { get; set; }
-        public DateTimeOffset CreateOn { get; set; }
+        public DateTimeOffset CreatedOn { get; set; }
+        public string? CreatedByUserId { get; set; }
         public DateTimeOffset? LastModifiedOn { get; set; }
-        public virtual void aaa() { }
+        public string? ModifiedByUserId { get; set; }
     }
 }

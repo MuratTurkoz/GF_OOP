@@ -9,14 +9,12 @@ namespace GFA.OOP.Models
     {
         private int _level;
 
-    
-        public string UserName { get; set; }
+        public string Name { get; set; }
         public int Level => _level;
         public Race Race { get; private set; }
         public PlayerClassType ClassType { get; set; }
-        public int FavouriteNumber { get; set; }
+        public int  FavouriteNumber { get; set; }
         public double Hp { get; set; }
-
 
         public Player()
         {
@@ -28,9 +26,9 @@ namespace GFA.OOP.Models
         public Player(string name, int level, Race race, PlayerClassType classType)
         {
 
-            Id = Guid.NewGuid() ;
+            Id = Guid.NewGuid();
 
-            UserName = name;
+            Name = name;
 
             _level = level;
 
@@ -45,7 +43,7 @@ namespace GFA.OOP.Models
         {
             _level += 1;
 
-            Console.WriteLine($"{UserName} named character was leveled up to {_level}");
+            Console.WriteLine($"{Name} named character was leveled up to {_level}");
         }
 
         public void ChangeRace(Race race)

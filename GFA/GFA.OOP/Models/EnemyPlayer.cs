@@ -1,15 +1,13 @@
 ﻿using GFA.OOP.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GFA.OOP.Models
 {
-    public class EnemyPlayer : BaseModel<Guid>
+    public class EnemyPlayer:IModel<Guid>,ICreatedByModel
     {
         public string Name { get; set; }
         public double Hp { get; set; }
+        public Guid Id { get; set; }
+        public DateTimeOffset CreatedOn { get; set; }
+        public string? CreatedByUserId { get; set; }
     }
 }

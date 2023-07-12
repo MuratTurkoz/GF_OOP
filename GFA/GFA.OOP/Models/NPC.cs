@@ -1,14 +1,17 @@
 ﻿using GFA.OOP.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GFA.OOP.Models
 {
-    public class NPC : BaseModel<int>
+    public class NPC:BaseModel<Guid>
     {
+        public string Name { get; set; }
+        public double Hp { get; set; }
 
+        public NPC()
+        {
+            Id = new Guid();
+
+            Id = Guid.NewGuid();
+        }
     }
 }

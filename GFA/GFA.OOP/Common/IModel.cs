@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GFA.OOP.Common
+﻿namespace GFA.OOP.Common
 {
-    public interface IModel<Tkey> where Tkey : class
+    public interface IModel<TKey>
     {
-        Tkey Id { get; set; }
-
+        TKey Id { get; set; }
     }
 }
