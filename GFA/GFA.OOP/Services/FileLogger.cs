@@ -25,6 +25,7 @@ namespace GFA.OOP.Services
             var formattedMessage = $"{message}, {DateTime.Now:dd-MM-yyyy hh:mm:ss} \n";
 
             base.Log(formattedMessage);
+            
 
             if (File.Exists(_filePath))
               File.AppendAllText(_filePath, formattedMessage);
