@@ -23,7 +23,7 @@ var productDivs = driver.FindElements(By.CssSelector(".card.h-100"));
 
 foreach (var element in productDivs)
 {
-        var onSale = element.FindElement(By.CssSelector(".onsale"));
+        var onSale = element.FindElement(!By.CssSelector(".onsale"));
     if (onSale is not null)
     {
         onSale ="true";
