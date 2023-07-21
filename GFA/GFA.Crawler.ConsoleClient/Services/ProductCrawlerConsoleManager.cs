@@ -1,42 +1,29 @@
 ﻿using GFA.Crawler.Application.Interfaces;
 using GFA.Crawler.Application.Models;
-using GFA.Crawler.Domain.Entities;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WebDriverManager;
+using OpenQA.Selenium;
 using WebDriverManager.DriverConfigs.Impl;
+using WebDriverManager;
+using GFA.Crawler.Domain.Entities;
 
 namespace GFA.Crawler.ConsoleClient.Services
 {
     public class ProductCrawlerConsoleManager : IProductCrawlerService
     {
         private readonly IWebDriver _driver;
+
         public ProductCrawlerConsoleManager()
         {
             new DriverManager().SetUpDriver(new FirefoxConfig());
-            _driver = new ChromeDriver();
+
+            _driver = new FirefoxDriver();
         }
 
-        public string CheckGooglePage()
+        public ProductCrawlerResponseDto Crawl()
         {
+            var urlToCrawl = "https://4teker.net";
+
             _driver.Navigate();
-            return string.Empty;
-        }
-
-        public ProductCrawlerResponseDto Crawl(int productCount)
-        {
-
-            string urlToCrawl = "https://4teker.net";
-            _driver.Navigate();
-
 
             _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromMilliseconds(1000);
 
@@ -49,17 +36,17 @@ namespace GFA.Crawler.ConsoleClient.Services
 
             var productDivs = _driver.FindElements(By.CssSelector(".card.h-100"));
 
-            List<Product> products = new();
+            List<Product> products = new ();
+
             foreach (var productDiv in productDivs)
             {
                 var product = new Product();
 
                 // Select OnSaleDiv
 
-                var onSaleDiv = productDiv.FindElements(By.ClassName("onsale"));
-                //Console.WriteLine(onSaleDiv.Text);
+                var onSaleDivElements = productDiv.FindElements(By.CssSelector(".onsale"));
 
-                if (onSaleDiv is not null && onSaleDiv.Any())
+                if (onSaleDivElements is not null && onSaleDivElements.Any())
                 {
                     product.IsOnSale = true;
 
@@ -74,7 +61,6 @@ namespace GFA.Crawler.ConsoleClient.Services
                         .Replace(",", ".");
 
                     product.SalePrice = Convert.ToDecimal(salePriceText);
-
                 }
 
                 // Selecting Product Name
@@ -98,21 +84,23 @@ namespace GFA.Crawler.ConsoleClient.Services
                 var productImg = productDiv.FindElement(By.TagName("img"));
 
                 product.ImagePath = productImg.GetAttribute("src");
+
                 products.Add(product);
 
             }
 
             Thread.Sleep(500);
 
-            //var submitButton = _driver.FindElement(By.ClassName("gNO89b"));
-
-            //submitButton.Click();
-
-            Thread.Sleep(7500);
-
             _driver.Quit();
 
             return new ProductCrawlerResponseDto(products);
+        }
+
+        public string CheckGooglePage()
+        {
+            _driver.Navigate();
+
+            return string.Empty;
         }
     }
 }

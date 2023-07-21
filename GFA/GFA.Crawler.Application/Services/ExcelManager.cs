@@ -1,62 +1,103 @@
 ﻿using ClosedXML.Excel;
-using DocumentFormat.OpenXml.Spreadsheet;
 using GFA.Crawler.Application.Interfaces;
 using GFA.Crawler.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GFA.Crawler.Application.Services
 {
-    public class ExcelManager : IExcelServices
+    public class ExcelManager:IExcelService
     {
-        public byte[] CreateProductsFile(List<Product> product)
+        public byte[] CreateProductsFile(List<Product> products)
         {
-            Product p = new Product();
-
             using (var workbook = new XLWorkbook())
             {
+                // General Info & Settings
+                workbook.Properties.Author = "Hacked By Alper Tunga";
+                workbook.Properties.Title = "Crawled Products";
+                workbook.Properties.Subject = "Crawled Products";
+
+                // Worksheet Settings
                 var worksheet = workbook.Worksheets.Add("Products");
 
+                worksheet.ColumnWidth = 20;
 
+                // Table Headers
 
-                for (int i = 0; i < product.Count; i++)
+                for (int i = 1; i <= 6; i++)
                 {
-                    worksheet.Cell($"A{i + 1}").Value = product[i].Id.ToString();
-                    worksheet.Cell($"A{i + 1}").Value = product[i].Name.ToString();
-                    worksheet.Cell($"A{i + 1}").Value = product[i].IsOnSale.ToString();
-                    worksheet.Cell($"A{i + 1}").Value = product[i].Price.ToString("C");
-                    worksheet.Cell($"A{i + 1}").Value = product[i].SalePrice.ToString();
-                    worksheet.Cell($"A{i + 1}").Value = product[i].SalePrice.HasValue ? product[i].SalePrice.Value.ToString() : "Not on Sale";
-                    workbook.SaveAs("C:\\Users\\Murat\\Desktop");
+                    worksheet.Cell(1, i).Style.Font.Bold = true;
+                    worksheet.Cell(1, i).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                    worksheet.Cell(1, i).Style.Fill.SetBackgroundColor(XLColor.BlueGray);
                 }
+
+                worksheet.Cell(1, 1).Value = "ID";
+
+                worksheet.Cell(1, 2).Value = "Name";
+
+                worksheet.Cell(1, 3).Value = "Is On Sale";
+
+                worksheet.Cell(1, 4).Value = "Price";
+
+                worksheet.Cell(1, 5).Value = "Sale Price";
+
+                worksheet.Cell(1, 6).Value = "Image Path";
+
+                worksheet.Column(1).Width = 60;
+
+                worksheet.Column(6).Width = 60;
+
+                var rowIndex = 2;
+
+                foreach (var product in products)
+                {
+                    worksheet.Cell(rowIndex, 1).Value = product.Id.ToString();
+
+                    worksheet.Cell(rowIndex, 2).Value = product.Name;
+
+                    worksheet.Cell(rowIndex, 3).Value = product.IsOnSale.ToString();
+
+                    worksheet.Cell(rowIndex, 3).Style.Fill.BackgroundColor = product.IsOnSale ? XLColor.Green : XLColor.Red;
+
+                    worksheet.Cell(rowIndex, 4).Value = product.Price.ToString("C");
+
+                    worksheet.Cell(rowIndex, 5).Value = product.SalePrice.HasValue
+                        ? product.SalePrice.Value.ToString("C") : "Not on sale";
+
+                    worksheet.Cell(rowIndex, 5).Style.Fill.BackgroundColor = product.SalePrice.HasValue ? XLColor.Green : XLColor.Red;
+
+                    worksheet.Cell(rowIndex, 6).Value = product.ImagePath;
+
+                    rowIndex++;
+                }
+
                 var firstCell = worksheet.FirstCellUsed();
                 var lastCell = worksheet.LastCellUsed();
 
                 var range = worksheet.Range(firstCell.Address, lastCell.Address);
 
+                range.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
 
                 var table = range.CreateTable();
-                //return workbook.Worksheets
+
                 using (var memoryStream = new MemoryStream())
                 {
                     workbook.SaveAs(memoryStream);
+
                     return memoryStream.ToArray();
                 }
             }
         }
 
-        public void SaveFile(byte[] excelFile, string fileName, string filePath)
+        public void SaveFile(byte[] excelFile, string savePath)
         {
-            throw new NotImplementedException();
+            using (FileStream stream = new FileStream(savePath,FileMode.Create))
+            {
+                stream.Write(excelFile);
+            }
         }
 
-        public void CreateStyledCell(byte[] excelFile, string fileName, string filePath)
-        {
-
-        }
+        //private void CreateStyledCell(int row, int column, XLDataType dataType, ref IXLWorksheet worksheet)
+        //{
+        //    worksheet.Cell(row, column).DataType = dataType;
+        //}
     }
 }
